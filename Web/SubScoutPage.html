@@ -1,0 +1,124 @@
+<!-- Web/SubScoutPage.html -->
+<div id="subscoutPage"
+     data-role="page"
+     class="type-interior pluginConfigurationPage"
+     data-controller="__plugin/SubScoutScript.js">
+
+  <!-- Defensive CSS: ensure our view is clickable even if a stale overlay exists -->
+  <style>
+    /* If a stale modal/backdrop is left around, nullify it within this view */
+    #subscoutPage .dialogContainer,
+    #subscoutPage .dialogBackdrop,
+    #subscoutPage .toastContainer,
+    #subscoutPage .modalBackdrop,
+    #subscoutPage .loadingIndicator,
+    #subscoutPage .skinHeader-withBackground {
+      pointer-events: none !important;
+    }
+    /* Our content must always accept pointer events */
+    #subscoutPage [data-role="content"],
+    #subscoutPage .content-primary,
+    #subscoutPage form,
+    #subscoutPage input,
+    #subscoutPage textarea,
+    #subscoutPage button,
+    #subscoutPage label {
+      pointer-events: auto !important;
+    }
+  </style>
+
+  <div data-role="content">
+    <div class="content-primary">
+      <h1>SubScout</h1>
+      <p class="fieldDescription">
+        Recursive local-subtitle discovery and optional copy/move next to media on library scans.
+      </p>
+
+      <form id="subscoutForm" class="verticalSection" autocomplete="off">
+        <fieldset>
+          <legend>Scan &amp; Matching</legend>
+
+          <div class="inputContainer">
+            <label for="templates">Templates (one per line)</label>
+            <textarea id="templates" rows="8" class="emby-textarea"></textarea>
+            <div class="fieldDescription">
+              Placeholders:
+              <code>%f%</code>=file+ext,
+              <code>%fn%</code>=file (no ext),
+              <code>%fe%</code>=ext (no dot),
+              <code>%l%</code>=language (3-letter),
+              <code>%n%</code>=numbers,
+              <code>%any%</code>=wildcard.
+            </div>
+          </div>
+
+          <div class="inputContainer">
+            <label for="extensions">Subtitle Extensions (one per line, with dot)</label>
+            <textarea id="extensions" rows="4" class="emby-textarea" placeholder=".srt
+.ass
+.ssa
+.vtt
+.sub
+.idx"></textarea>
+          </div>
+
+          <div class="inputContainer">
+            <label for="languageSynonyms">Language Synonyms (group per line, tokens “|” separated)</label>
+            <textarea id="languageSynonyms" rows="6" class="emby-textarea" placeholder="en|eng|english
+da|dan|dansk|danish"></textarea>
+          </div>
+
+          <div class="checkboxContainer">
+            <label><input id="allowDeepMatch" type="checkbox"> <span>Allow deep recursive match</span></label>
+          </div>
+
+          <div class="inputContainer">
+            <label for="maxDepth">Max Depth (0 = unbounded)</label>
+            <input id="maxDepth" type="number" min="0" class="emby-input">
+          </div>
+
+          <div class="checkboxContainer">
+            <label><input id="useCultureLanguageMap" type="checkbox"> <span>Use ICU/CultureInfo language expansion</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Scope (optional)</legend>
+          <div class="inputContainer">
+            <label for="onlyPathContains">Only Path Contains</label>
+            <input id="onlyPathContains" type="text" class="emby-input" placeholder="e.g. The Office (US)">
+          </div>
+          <div class="inputContainer">
+            <label for="onlyNameContains">Only Name Contains</label>
+            <input id="onlyNameContains" type="text" class="emby-input">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Copy / Move</legend>
+          <div class="checkboxContainer">
+            <label><input id="copyToMediaFolder" type="checkbox"> <span>Copy matched subtitles next to media</span></label>
+          </div>
+          <div class="checkboxContainer">
+            <label><input id="moveInsteadOfCopy" type="checkbox"> <span>Move instead of copy</span></label>
+          </div>
+          <div class="checkboxContainer">
+            <label><input id="overwriteExisting" type="checkbox"> <span>Overwrite existing destination file</span></label>
+          </div>
+
+          <div class="inputContainer">
+            <label for="destinationPattern">Destination Pattern</label>
+            <input id="destinationPattern" type="text" class="emby-input" placeholder="%fn%.%l%.%fe%">
+            <div class="fieldDescription">Placeholders: <code>%fn%</code>=video base, <code>%l%</code>=3-letter lang, <code>%fe%</code>=subtitle ext (no dot)</div>
+          </div>
+        </fieldset>
+
+        <div class="buttons" style="gap:.5rem;display:flex;flex-wrap:wrap">
+          <button type="button" id="btnRestoreDefaults" class="raised button-cancel">Restore Default Templates</button>
+          <button type="button" id="btnTest" class="raised">Test</button>
+          <button type="button" id="btnSave" class="raised button-submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

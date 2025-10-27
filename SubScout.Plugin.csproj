@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>SubScout.Plugin</AssemblyName>
+    <RootNamespace>SubScout</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Jellyfin.Common" Version="10.10.7" />
+    <PackageReference Include="Jellyfin.Controller" Version="10.10.7" />
+    <PackageReference Include="Jellyfin.Model" Version="10.10.7" />
+    <PackageReference Include="Jellyfin.Extensions" Version="10.10.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Web\SubScoutPage.html" />
+    <EmbeddedResource Include="Web\SubScoutScript.js" Condition="Exists('Web\SubScoutScript.js')" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="LocalSubs*.cs" />
+    <EmbeddedResource Remove="LocalSubs*.html" />
+    <None Remove="LocalSubs*.js" />
+  </ItemGroup>
+</Project>
