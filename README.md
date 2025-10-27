@@ -51,3 +51,56 @@ Defaults already cover the common cases.
 * Hooks that actually fire on Jellyfin 10.10.x (scan + change)
 
 Again, big thanks to **azam/jellyfin-plugin-localsubs** for the original idea and groundwork.
+
+
+## Build from source (optional)
+
+**Prereqs:** .NET 8 SDK, Jellyfin 10.10.x
+
+1. **Clone & build**
+
+```bash
+git clone https://github.com/<you>/subscout-plugin.git
+cd subscout-plugin/Jellyfin.Plugin.LocalSubs
+dotnet restore
+dotnet build -c Release SubScout.Plugin.csproj
+```
+
+The plugin DLL will be at:
+`./bin/Release/net8.0/SubScout.Plugin.dll`
+
+2. **Install the DLL**
+
+**Docker (typical):**
+
+```bash
+docker exec -it jellyfin bash -c 'mkdir -p /config/plugins/SubScout_1.0.0'
+docker cp ./bin/Release/net8.0/SubScout.Plugin.dll jellyfin:/config/plugins/SubScout_1.0.0/SubScout.Plugin.dll
+docker restart jellyfin
+```
+
+**Bare-metal (no Docker):**
+
+* Create (if needed) and copy to:
+
+  ```
+  /var/lib/jellyfin/plugins/SubScout_1.0.0/SubScout.Plugin.dll
+  ```
+* Restart Jellyfin service:
+
+  ```bash
+  sudo systemctl restart jellyfin
+  ```
+
+3. **Verify**
+
+* Dashboard → **Plugins** → SubScout appears (status OK).
+* (Optional) Dashboard → **Plugins → SubScout → Test** to confirm it runs with defaults.
+
+> Tip for testing first-install defaults: delete the plugin config file, restart Jellyfin, then open SubScout. On Docker:
+>
+> ```bash
+> docker exec -it jellyfin bash -lc 'rm -f /config/plugins/configurations/*SubScout* /config/plugins/configurations/*7de4aa03*'
+> docker restart jellyfin
+> ```
+
